@@ -1,27 +1,53 @@
+from random import randint
 import numpy
 
-train_size=960000
-test_size=2000
+# Global settings
+trainSize = 960
+testSize = 1757
+M = 1  # Maximum distance
+gamma = 0.01
 
-max_distance=1
-gamma=0.01
+# Initialization
+vocabulary = {}
+bigram_table = {}
+trigram_table = {}
 
-##dictionary used
-vocabulary={}
-bi_table={}
-tri_table={}
-
-##filling vocabulary{}
-file_vocab=open('vocabulary.txt','r')
-while(1):
-    get_line=file_vocab.readline()
-    if(get_line==''):
+# Read high-frequency words from vocabularyfile
+fVocab = open('data/vocabulary-14216.txt', 'r')
+while True:
+    line = fVocab.readline()
+    if line == '':
         break
-    get_words=get_line.split()
-    vocabulary[get_words[0]]=int(get_words[1])
-    vocabulary['unknown']=58417315                  ## it is frequency of unknown word in training data
-    print('vocabulary built\n')
-    file_vocab.close()
+    words = line.split()
+    vocabulary[words[0]] = int(words[1])
+vocabulary['UNKA'] = 58417315
+print('High-frequency vocabulary size: ' + str(len(vocabulary)))
+fVocab.close()
 
-
-	
+# Statistics collection
+f = open('data/train_v2.txt', 'r')
+cnt = 0
+while cnt < trainSize:
+    line = f.readline()
+    cnt = cnt + 1
+    words = line.split()
+    for k in range(0, len(words)):
+        if words[k] not in vocabulary:
+            words[k] = 'UNKA'
+    for i in range(0, len(words)):
+        for m in range(0, M + 1):
+            if i + m + 1 >= len(words):
+                break
+            key = words[i] + ' ' + words[i + m + 1] + ' ' + str(m)
+            if key in bigram_table:
+                bigram_table[key] = bigram_table[key] + 1
+            else:
+                bigram_table[key] = 1
+        if i <= len(words) - 3:
+            key = words[i] + ' ' + words[i + 1] + ' ' + words[i + 2]
+            if key in trigram_table:
+                trigram_table[key] = trigram_table[key] + 1
+            else:
+                trigram_table[key] = 1
+print('Feature table size: ' + str(len(bigram_table)))
+print('Trigram table size: ' + str(len(trigram_table)))
