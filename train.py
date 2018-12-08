@@ -1,3 +1,4 @@
+import pickle
 from random import randint
 import numpy
 
@@ -51,3 +52,10 @@ while cnt < trainSize:
                 trigram_table[key] = 1
 print('Feature table size: ' + str(len(bigram_table)))
 print('Trigram table size: ' + str(len(trigram_table)))
+
+
+###using pickle
+with open('bigram_table.pickle', 'wb') as handle:
+    pickle.dump(bigram_table, handle, protocol=pickle.HIGHEST_PROTOCOL)
+with open('trigram_table.pickle','wb') as handle:
+    pickle.dump(trigram_table,handle,protocol=pickle.HIGHEST_PROTOCOL)
