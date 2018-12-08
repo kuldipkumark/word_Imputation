@@ -22,7 +22,7 @@ while True:
     words = line.split()
     vocabulary[words[0]] = int(words[1])
 vocabulary['UNKA'] = 58417315
-print('High-frequency vocabulary size: ' + str(len(vocabulary)))
+print('vocabulary dictionary size: ' + str(len(vocabulary)))
 fVocab.close()
 
 # Statistics collection
@@ -50,7 +50,7 @@ while cnt < trainSize:
                 trigram_table[key] = trigram_table[key] + 1
             else:
                 trigram_table[key] = 1
-print('Feature table size: ' + str(len(bigram_table)))
+print('bigram  table size: ' + str(len(bigram_table)))
 print('Trigram table size: ' + str(len(trigram_table)))
 
 
