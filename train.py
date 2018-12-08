@@ -55,6 +55,8 @@ print('Trigram table size: ' + str(len(trigram_table)))
 
 
 ###using pickle
+with open('vocabulary.pickle','wb') as handle:
+    pickle.dump(vocabulary,handle,protocol=pickle.HIGHEST_PROTOCOL)
 with open('bigram_table.pickle', 'wb') as handle:
     pickle.dump(bigram_table, handle, protocol=pickle.HIGHEST_PROTOCOL)
 with open('trigram_table.pickle','wb') as handle:
