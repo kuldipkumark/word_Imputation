@@ -58,3 +58,38 @@ while(1):
                     score[k-1] = 1.0*numPos**(1+gamma)/(numNeg+numPos) - 1.0*numNeg**(1+gamma)/(numNeg+numPos)
         location = numpy.argmax(score) + 1
         print('missing word location= '+str(location))
+
+        maxWord = 'UNKA'
+        maxScore = 0
+        for word in vocabulary:
+            if word == 'UNKA':
+                continue
+            score = 0
+            key = words[location - 1] + ' ' + word + ' ' + str(0)
+            if key in bigram_table:
+                score = score + 0.25 * bigram_table[key] / vocabulary[words[location - 1]]
+                if location - 2 >= 0:
+                    key = words[location - 2] + ' ' + words[location - 1] + ' ' + word
+                    if key in trigram_table:
+                        score = score + 0.5 * trigram_table[key] / bigram_table[
+                            words[location - 2] + ' ' + words[location - 1] + ' ' + str(0)]
+            key = word + ' ' + words[location] + ' ' + str(0)
+            if key in bigram_table:
+                score = score + 0.25 * bigram_table[key] / vocabulary[words[location]]
+                if location + 1 < len(words):
+                    key = word + ' ' + words[location] + ' ' + words[location + 1]
+                    if key in trigram_table:
+                        score = score + 0.5 * trigram_table[key] / bigram_table[
+                            words[location] + ' ' + words[location + 1] + ' ' + str(0)]
+                key = words[location - 1] + ' ' + word + ' ' + words[location]
+                if key in trigram_table:
+                    score = score + 1.0 * trigram_table[key] / bigram_table[
+                        words[location - 1] + ' ' + words[location] + ' ' + str(1)]
+            if score > maxScore:
+                maxScore = score
+                maxWord = word
+        # if maxWord=='"':
+        #    maxWord = '""'
+        wordsOriginal.insert(location, maxWord)
+        print('correct sentence = ' + ' '.join(wordsOriginal))
+        print('\n')
