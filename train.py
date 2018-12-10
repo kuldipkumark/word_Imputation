@@ -3,7 +3,7 @@ from random import randint
 import numpy
 
 # Global settings
-trainSize = 960
+trainSize = 2000000
 testSize = 1757
 M = 1  # Maximum distance
 gamma = 0.01
@@ -28,6 +28,7 @@ fVocab.close()
 # Statistics collection
 f = open('data/train_v2.txt', 'r')
 cnt = 0
+a=0
 while cnt < trainSize:
     line = f.readline()
     cnt = cnt + 1
@@ -50,6 +51,9 @@ while cnt < trainSize:
                 trigram_table[key] = trigram_table[key] + 1
             else:
                 trigram_table[key] = 1
+    if (cnt % 200000 == 0):
+        print('milestone='+str(a)+'\n')
+        a = a + 1
 print('bigram  table size: ' + str(len(bigram_table)))
 print('Trigram table size: ' + str(len(trigram_table)))
 
