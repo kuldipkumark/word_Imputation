@@ -1,0 +1,47 @@
+{%extends "base.html"%}
+{%block app_content%}
+	<form action="" method="post">
+		{{form.hidden_tag()}}
+		{{form.sentence(placeholder="Enter sentence here",cols="50", rows="6")}}<br>
+		{{form.submit(style="background-color: #4CAF50;border: none;color: white;padding:
+		 15px 32px;text-aligncenter;text-decoration: none;display: inline-block;font-size:
+		 16px;margin: 4px 2px;cursor: pointer;box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),
+		 0 17px 50px 0 rgba(0,0,0,0.19);")}}
+	</form>
+	{%if val%}
+	<table >
+        <tr>
+                <th>Incorrect Sentence</th>
+                <th>Correct Sentence</th>
+        </tr>
+        <tr>
+                <td>{{form.sentence.data}}</td>
+                <td>{% for word in correct_sentence%}
+                		{% if loop.index0 == location%}
+                			<span style="color:red;">{{word}}</span>
+                		{% else %}
+              					{{word}}
+                		{%endif%}
+                	{%endfor%}
+                   </td>
+        </tr>
+	</table>
+	{%endif%}
+
+{%endblock%}
+
+{# <html>
+<head><title>Home</title></head>
+<body>
+	<form action="" method="post">
+		{{form.hidden_tag()}}
+		<div>
+			{{form.sentence()}}
+		</div>
+		<div>
+			{{form.submit()}}
+		</div>
+	</form>
+</body>
+</html>
+ #}
