@@ -16,12 +16,17 @@
         </tr>
         <tr>
                 <td>{{form.sentence.data}}</td>
-                <td>{% for word in correct_sentence%}
-                		{% if loop.index0 == location%}
-                			<span style="color:red;">{{word}}</span>
-                		{% else %}
-              					{{word}}
-                		{%endif%}
+                <td>{% for s in correct_sentence%}
+
+                		{%for word in s%}
+	                		{% if loop.index0 == location%}
+	                			<span style="color:red;">{{word}}
+	                			</span>
+	                		{% else %}
+	              					{{word}}
+	                		{%endif%}
+	                	{%endfor%}
+	                	<br>
                 	{%endfor%}
                    </td>
         </tr>

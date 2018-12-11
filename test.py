@@ -1,4 +1,5 @@
 import pickle
+import collections
 import numpy
 import re
 
@@ -31,6 +32,7 @@ def locate_missin_word(sentence, vocabulary, bigram_table, trigram_table):
     cnt = 1
 
         # Sentence preprocessing
+    score_dict={}
     words = line.split()
 
     wordsOriginal = words[:]
@@ -59,8 +61,7 @@ def locate_missin_word(sentence, vocabulary, bigram_table, trigram_table):
     location = numpy.argmax(score) + 1
     #print('missing word location= '+str(location))
 
-    maxWord = 'UNKA'
-    maxScore = 0
+
     for word in vocabulary:
         if word == 'UNKA':
             continue
@@ -85,12 +86,14 @@ def locate_missin_word(sentence, vocabulary, bigram_table, trigram_table):
             if key in trigram_table:
                 score = score + 1.0 * trigram_table[key] / bigram_table[
                     words[location - 1] + ' ' + words[location] + ' ' + str(1)]
-        if score > maxScore:
-            maxScore = score
-            maxWord = word
-    # if maxWord=='"':
-    #    maxWord = '""'
-    wordsOriginal.insert(location, maxWord)
-    return ' '.join(wordsOriginal), location
+            score_dict[score] = word
+    result=[]
+    score_dict = collections.OrderedDict(sorted(score_dict.items()))
+    for key in list(reversed(list(score_dict)))[0:5]:
+        a = wordsOriginal.copy()
+        a.insert(location, score_dict[key])
+        b = ' '.join(a)
+        result.append(b)
+    return result, location
     # print('correct sentence = ' + ' '.join(wordsOriginal))
     # print('\n')
